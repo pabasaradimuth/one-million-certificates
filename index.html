@@ -1,0 +1,1032 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>One Million Supporters</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f4f4;
+            color: #111;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #777;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: #555;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        .nav-button {
+            background: #111;
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 100px;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 100vh;
+            padding: 150px 6% 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 80% 20%, #dedede 0, transparent 25%),
+                linear-gradient(135deg, #ffffff, #e9e9e9);
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .small-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e3e3e3;
+            border: 1px solid #d0d0d0;
+            border-radius: 100px;
+            padding: 7px 13px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            color: #444;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            background: #111;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: clamp(52px, 7vw, 92px);
+            line-height: 0.95;
+            letter-spacing: -5px;
+            max-width: 800px;
+            margin-bottom: 28px;
+        }
+
+        h1 span {
+            color: #777;
+        }
+
+        .hero-text {
+            font-size: 18px;
+            max-width: 600px;
+            color: #555;
+            margin-bottom: 32px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .primary-button {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .primary-button:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        .secondary-button {
+            background: #fff;
+            color: #111;
+            border: 1px solid #ccc;
+            padding: 15px 25px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* CERTIFICATE */
+
+        .certificate-area {
+            display: flex;
+            justify-content: center;
+        }
+
+        .certificate {
+            width: 100%;
+            max-width: 440px;
+            background: #fff;
+            border: 1px solid #bbb;
+            padding: 12px;
+            box-shadow: 20px 25px 60px rgba(0,0,0,0.15);
+            transform: rotate(2deg);
+            transition: 0.4s;
+        }
+
+        .certificate:hover {
+            transform: rotate(0deg) translateY(-8px);
+        }
+
+        .certificate-inner {
+            border: 1px solid #222;
+            padding: 45px 35px;
+            text-align: center;
+            position: relative;
+        }
+
+        .certificate-inner:before,
+        .certificate-inner:after {
+            content: "";
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border: 2px solid #999;
+        }
+
+        .certificate-inner:before {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .certificate-inner:after {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .cert-small {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: #777;
+            text-transform: uppercase;
+        }
+
+        .cert-title {
+            font-family: Georgia, serif;
+            font-size: 34px;
+            margin: 15px 0;
+        }
+
+        .cert-name {
+            font-family: Georgia, serif;
+            font-size: 26px;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        .cert-line {
+            height: 1px;
+            background: #ccc;
+            margin: 18px 0;
+        }
+
+        .cert-number {
+            font-size: 11px;
+            color: #777;
+            letter-spacing: 2px;
+        }
+
+        /* COUNTER */
+
+        .counter-section {
+            background: #111;
+            color: white;
+            padding: 80px 6%;
+        }
+
+        .counter-container {
+            max-width: 1100px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .counter-label {
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+        .counter {
+            font-size: clamp(50px, 9vw, 100px);
+            font-weight: 800;
+            letter-spacing: -5px;
+        }
+
+        .counter-total {
+            color: #666;
+        }
+
+        .progress {
+            height: 8px;
+            background: #333;
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 700px;
+            margin: 25px auto 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 1.2%;
+            background: white;
+        }
+
+        .progress-text {
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* STORY */
+
+        .section {
+            padding: 110px 6%;
+        }
+
+        .section-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .section-heading {
+            font-size: clamp(38px, 5vw, 65px);
+            letter-spacing: -3px;
+            line-height: 1;
+            margin-bottom: 25px;
+        }
+
+        .section-heading span {
+            color: #999;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: start;
+        }
+
+        .story-text {
+            color: #555;
+            font-size: 17px;
+        }
+
+        .story-text p {
+            margin-bottom: 18px;
+        }
+
+        .quote {
+            border-left: 3px solid #111;
+            padding-left: 25px;
+            font-family: Georgia, serif;
+            font-size: 27px;
+            line-height: 1.3;
+        }
+
+        /* HOW IT WORKS */
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 45px;
+        }
+
+        .step {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 30px;
+            min-height: 220px;
+            transition: 0.25s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .step-number {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .step h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* VERIFY */
+
+        .verify-section {
+            background: #e1e1e1;
+        }
+
+        .verify-box {
+            max-width: 700px;
+            margin: 40px auto 0;
+            background: white;
+            padding: 35px;
+            border: 1px solid #ccc;
+        }
+
+        .verify-input {
+            width: 100%;
+            padding: 17px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .verify-input:focus {
+            border-color: #111;
+        }
+
+        .verify-result {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f1f1f1;
+            border-left: 4px solid #111;
+        }
+
+        /* SUPPORT */
+
+        .support {
+            text-align: center;
+            background: #fff;
+        }
+
+        .support-content {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .price {
+            font-size: 70px;
+            font-weight: 800;
+            letter-spacing: -4px;
+            margin: 20px 0;
+        }
+
+        .price span {
+            font-size: 18px;
+            color: #888;
+            letter-spacing: 0;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111;
+            color: white;
+            padding: 60px 6% 30px;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .footer-title {
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .footer-text {
+            color: #888;
+            max-width: 400px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 130px 5% 70px;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            h1 {
+                letter-spacing: -3px;
+            }
+
+            .certificate-area {
+                padding: 10px;
+            }
+
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 80px 5%;
+            }
+
+            .footer-top {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav>
+    <div class="logo">
+        ONE MILLION SUPPORT PAGE<span>.</span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#story">My Story</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#verify">Verify</a></li>
+        <li><a href="#support" class="nav-button">Support $1</a></li>
+    </ul>
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-container">
+
+        <div>
+
+            <div class="small-label">
+                <div class="dot"></div>
+                A PERSONAL SUPPORT PROJECT
+            </div>
+
+            <h1>
+                One million people.
+                <span>One small dollar.</span>
+            </h1>
+
+            <p class="hero-text">
+                I'm a university student from Sri Lanka trying to build
+                a better future. I created this project to give people
+                around the world a simple way to support my journey.
+            </p>
+
+            <div class="buttons">
+                <a href="#support" class="primary-button">
+                    Support Me — $1
+                </a>
+
+                <a href="#story" class="secondary-button">
+                    Read My Story
+                </a>
+            </div>
+
+        </div>
+
+
+        <!-- CERTIFICATE -->
+
+        <div class="certificate-area">
+
+            <div class="certificate">
+
+                <div class="certificate-inner">
+
+                    <div class="cert-small">
+                        Certificate of Support
+                    </div>
+
+                    <div class="cert-title">
+                        Thank You
+                    </div>
+
+                    <div class="cert-small">
+                        This certificate belongs to
+                    </div>
+
+                    <div class="cert-name">
+                        Your Name
+                    </div>
+
+                    <div class="cert-line"></div>
+
+                    <div class="cert-small">
+                        Supporter Number
+                    </div>
+
+                    <div style="font-size: 25px; margin: 10px;">
+                        #000001
+                    </div>
+
+                    <div class="cert-number">
+                        1 OF 1,000,000
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- COUNTER -->
+
+<section class="counter-section">
+
+    <div class="counter-container">
+
+        <div class="counter-label">
+            Supporters so far
+        </div>
+
+        <div class="counter">
+            12,482
+            <span class="counter-total">/ 1M</span>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="progress-text">
+            Every supporter becomes part of this journey.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STORY -->
+
+<section class="section" id="story">
+
+    <div class="section-container">
+
+        <div class="story-grid">
+
+            <div>
+
+                <div class="small-label">
+                    MY STORY
+                </div>
+
+                <h2 class="section-heading">
+                    I'm just trying to
+                    <span>keep moving forward.</span>
+                </h2>
+
+            </div>
+
+            <div class="story-text">
+
+                <p>
+                    Hi. I'm a university student from Sri Lanka.
+                    Like many students, I have dreams for my future,
+                    but sometimes money makes those dreams difficult.
+                </p>
+
+                <p>
+                    Instead of asking one person for a large amount,
+                    I wanted to create something where many people
+                    could help with just a small amount.
+                </p>
+
+                <p>
+                    That's why I created this project.
+                </p>
+
+                <p>
+                    For $1, you can become one of the people who
+                    supported me on this journey.
+                </p>
+
+                <p>
+                    There is absolutely no pressure to buy.
+                    If you simply read my story, thank you.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUOTE -->
+
+<section class="section" style="padding-top:20px;">
+
+    <div class="section-container">
+
+        <div class="quote">
+            "Sometimes a small amount from many people
+            can make a big difference to one person's life."
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section class="section" id="how">
+
+    <div class="section-container">
+
+        <div class="small-label">
+            HOW IT WORKS
+        </div>
+
+        <h2 class="section-heading">
+            Simple. <span>Transparent.</span>
+        </h2>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">01</div>
+
+                <h3>Support</h3>
+
+                <p>
+                    Choose to support my university journey
+                    with a $1 contribution.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">02</div>
+
+                <h3>Receive</h3>
+
+                <p>
+                    You'll receive a personalized digital
+                    certificate with your name and unique number.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">03</div>
+
+                <h3>Verify</h3>
+
+                <p>
+                    Anyone can verify the authenticity of your
+                    certificate using its unique code.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VERIFY -->
+
+<section class="section verify-section" id="verify">
+
+    <div class="section-container">
+
+        <div style="text-align:center;">
+
+            <div class="small-label">
+                AUTHENTICITY
+            </div>
+
+            <h2 class="section-heading">
+                Verify a <span>certificate.</span>
+            </h2>
+
+            <p style="color:#666;">
+                Enter the unique code printed on a certificate.
+            </p>
+
+        </div>
+
+        <div class="verify-box">
+
+            <input
+                type="text"
+                class="verify-input"
+                id="code"
+                placeholder="Example: SUP-7K4P-X92M-Q8TZ"
+            >
+
+            <button
+                class="primary-button"
+                style="width:100%;"
+                onclick="verifyCertificate()"
+            >
+                Verify Certificate
+            </button>
+
+            <div class="verify-result" id="result">
+
+                <strong>✓ Certificate Found</strong>
+
+                <br><br>
+
+                Certificate Number:
+                <strong>#004821</strong>
+
+                <br>
+
+                Holder:
+                <strong>John Smith</strong>
+
+                <br>
+
+                Status:
+                <strong>Authentic</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SUPPORT -->
+
+<section class="section support" id="support">
+
+    <div class="support-content">
+
+        <div class="small-label">
+            BECOME A SUPPORTER
+        </div>
+
+        <h2 class="section-heading">
+            Your $1 can help me
+            <span>keep going.</span>
+        </h2>
+
+        <div class="price">
+            $1
+            <span>one time</span>
+        </div>
+
+        <p style="color:#666; margin-bottom:25px;">
+            You'll receive a personalized digital certificate
+            with your name and unique supporter number.
+        </p>
+
+        <button
+            class="primary-button"
+            style="font-size:16px; padding:17px 35px;"
+            onclick="startPayment()"
+        >
+            Support Me — $1
+        </button>
+
+        <p style="font-size:12px; color:#999; margin-top:18px;">
+            Payment processing will be connected here.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-top">
+
+            <div>
+                <div class="footer-title">
+                    ONE MILLION.
+                </div>
+
+                <p class="footer-text">
+                    A personal support project created by
+                    a university student from Sri Lanka.
+                </p>
+            </div>
+
+            <div class="footer-text">
+                Thank you for taking the time to read my story.
+                Whether you support me or simply share this
+                project, it means something.
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <div>
+                © 2026 One Million Support Project
+            </div>
+
+            <div>
+                Made with hope.
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* TEMPORARY CERTIFICATE VERIFICATION */
+
+    function verifyCertificate() {
+
+        const code = document.getElementById("code").value.trim();
+        const result = document.getElementById("result");
+
+        if (code === "") {
+            alert("Please enter a certificate code.");
+            return;
+        }
+
+        /*
+            THIS WILL LATER CONNECT TO SUPABASE.
+
+            Example:
+
+            code entered
+                  ↓
+            Supabase database
+                  ↓
+            certificate found?
+                  ↓
+            show real buyer information
+        */
+
+        result.style.display = "block";
+    }
+
+
+    /* TEMPORARY PAYMENT BUTTON */
+
+    function startPayment() {
+
+        /*
+            PAYPAL WILL BE CONNECTED HERE LATER.
+
+            Payment flow:
+
+            Buyer
+              ↓
+            PayPal
+              ↓
+            Payment confirmed
+              ↓
+            Secure backend
+              ↓
+            Create certificate
+              ↓
+            Supabase
+              ↓
+            Give buyer PDF
+        */
+
+        alert("PayPal payment will be connected here.");
+    }
+
+</script>
+
+</body>
+</html>
+```
