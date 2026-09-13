@@ -885,13 +885,7 @@
             with your name and unique supporter number.
         </p>
 
-        <button
-            class="primary-button"
-            style="font-size:16px; padding:17px 35px;"
-            onclick="startPayment()"
-        >
-            Support Me — $1
-        </button>
+        <div id="paypal-button-container"></div>
 
         <p style="font-size:12px; color:#999; margin-top:18px;">
             Payment processing will be connected here.
@@ -1060,13 +1054,79 @@ async function loadSupporterCount() {
     }
 }
     
-function startPayment() {
-    alert("PayPal payment will be connected here later.");
-}
+paypal.Buttons({
+
+    createOrder: async function () {
+
+        const response = await fetch(
+            `${SUPABASE_URL}/functions/v1/create-paypal-order`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY
+                },
+                body: "{}"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error("Could not create PayPal order");
+        }
+
+        return data.id;
+    },
+
+    onApprove: async function (data) {
+
+        const response = await fetch(
+            `${SUPABASE_URL}/functions/v1/capture-paypal-order`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY
+                },
+                body: JSON.stringify({
+                    orderID: data.orderID
+                })
+            }
+        );
+
+        const capture = await response.json();
+
+        if (!response.ok) {
+            console.error(capture);
+            alert("Payment could not be completed.");
+            return;
+        }
+
+        console.log("Payment captured:", capture);
+
+        alert("Payment successful!");
+
+    },
+
+    onCancel: function () {
+        alert("Payment cancelled.");
+    },
+
+    onError: function (err) {
+        console.error(err);
+        alert("Something went wrong with PayPal.");
+    }
+
+}).render("#paypal-button-container");
 
     loadSupporterCount();
     
 </script>
+
+<script src="https://www.paypal.com/sdk/js?client-id=BAAW1WYzXl-03wKPNEmKQ39iJ2bTHSYED6rKsDVtho9KDq82MfQzD7HID-GXKefwBBC-2ac8FJQQ8k-s8k&currency=USD"></script>
+    
 </body>
 </html>
 ```
