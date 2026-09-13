@@ -666,10 +666,9 @@
         </div>
 
         <div class="counter">
-            12,482
+            <span id="supporterCount">0</span>
             <span class="counter-total">/ 1M</span>
         </div>
-
         <div class="progress">
             <div class="progress-bar"></div>
         </div>
@@ -1028,10 +1027,45 @@ async function verifyCertificate() {
     }
 }
 
+async function loadSupporterCount() {
+    try {
+        const response = await fetch(
+            `${SUPABASE_URL}/rest/v1/rpc/get_supporter_count`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY
+                },
+                body: "{}"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to load supporter count");
+        }
+
+        const count = await response.json();
+
+        document.getElementById("supporterCount").textContent =
+            Number(count).toLocaleString();
+
+        const percentage = Math.min((Number(count) / 1000000) * 100, 100);
+
+        document.querySelector(".progress-bar").style.width =
+            `${percentage}%`;
+
+    } catch (error) {
+        console.error("Counter error:", error);
+    }
+}
+    
 function startPayment() {
     alert("PayPal payment will be connected here later.");
 }
 
+    loadSupporterCount();
+    
 </script>
 </body>
 </html>
