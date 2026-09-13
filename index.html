@@ -852,26 +852,7 @@
                 Verify Certificate
             </button>
 
-            <div class="verify-result" id="result">
-
-                <strong>✓ Certificate Found</strong>
-
-                <br><br>
-
-                Certificate Number:
-                <strong>#004821</strong>
-
-                <br>
-
-                Holder:
-                <strong>John Smith</strong>
-
-                <br>
-
-                Status:
-                <strong>Authentic</strong>
-
-            </div>
+           <div class="verify-result" id="result"></div>
 
         </div>
 
@@ -1007,13 +988,11 @@ async function verifyCertificate() {
         const data = await response.json();
 
         if (data.length === 0) {
-
             result.innerHTML = `
                 <strong>✕ Certificate Not Found</strong>
                 <br><br>
                 Please check the certificate code and try again.
             `;
-
             return;
         }
 
@@ -1025,22 +1004,15 @@ async function verifyCertificate() {
         result.innerHTML = `
             <strong>✓ Authentic Certificate</strong>
             <br><br>
-
             Certificate Number:
             <strong>#${certificate.certificate_number}</strong>
-
             <br>
-
             Holder:
             <strong>${certificate.buyer_name}</strong>
-
             <br>
-
             Issued:
             <strong>${date}</strong>
-
             <br>
-
             Status:
             <strong>Authentic</strong>
         `;
@@ -1056,7 +1028,6 @@ async function verifyCertificate() {
         `;
     }
 }
-
 
 function startPayment() {
     alert("PayPal payment will be connected here later.");
