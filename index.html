@@ -982,9 +982,10 @@ async function verifyCertificate() {
         );
 
         if (!response.ok) {
-            throw new Error("Verification failed");
-        }
-
+    const errorText = await response.text();
+    console.error("Supabase error:", response.status, errorText);
+    throw new Error("Verification failed");
+}
         const data = await response.json();
 
         if (data.length === 0) {
