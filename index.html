@@ -968,65 +968,101 @@
 
 <script>
 
-    /* TEMPORARY CERTIFICATE VERIFICATION */
+const SUPABASE_URL = "https://jliooxbeeevwuowguvey.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_nlXhIURrexaJGJFS5Pw3aA_ouqws2oM";
 
-    function verifyCertificate() {
+async function verifyCertificate() {
 
-        const code = document.getElementById("code").value.trim();
-        const result = document.getElementById("result");
+    const code = document.getElementById("code").value.trim();
+    const result = document.getElementById("result");
 
-        if (code === "") {
-            alert("Please enter a certificate code.");
+    if (code === "") {
+        alert("Please enter a certificate code.");
+        return;
+    }
+
+    result.style.display = "block";
+    result.innerHTML = "Checking certificate...";
+
+    try {
+
+        const response = await fetch(
+            `${SUPABASE_URL}/rest/v1/rpc/verify_certificate`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY
+                },
+                body: JSON.stringify({
+                    code_input: code
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Verification failed");
+        }
+
+        const data = await response.json();
+
+        if (data.length === 0) {
+
+            result.innerHTML = `
+                <strong>✕ Certificate Not Found</strong>
+                <br><br>
+                Please check the certificate code and try again.
+            `;
+
             return;
         }
 
-        /*
-            THIS WILL LATER CONNECT TO SUPABASE.
+        const certificate = data[0];
 
-            Example:
+        const date = new Date(certificate.created_at)
+            .toLocaleDateString();
 
-            code entered
-                  ↓
-            Supabase database
-                  ↓
-            certificate found?
-                  ↓
-            show real buyer information
-        */
+        result.innerHTML = `
+            <strong>✓ Authentic Certificate</strong>
+            <br><br>
 
-        result.style.display = "block";
+            Certificate Number:
+            <strong>#${certificate.certificate_number}</strong>
+
+            <br>
+
+            Holder:
+            <strong>${certificate.buyer_name}</strong>
+
+            <br>
+
+            Issued:
+            <strong>${date}</strong>
+
+            <br>
+
+            Status:
+            <strong>Authentic</strong>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        result.innerHTML = `
+            <strong>Unable to verify certificate.</strong>
+            <br><br>
+            Please try again later.
+        `;
     }
+}
 
 
-    /* TEMPORARY PAYMENT BUTTON */
-
-    function startPayment() {
-
-        /*
-            PAYPAL WILL BE CONNECTED HERE LATER.
-
-            Payment flow:
-
-            Buyer
-              ↓
-            PayPal
-              ↓
-            Payment confirmed
-              ↓
-            Secure backend
-              ↓
-            Create certificate
-              ↓
-            Supabase
-              ↓
-            Give buyer PDF
-        */
-
-        alert("PayPal payment will be connected here.");
-    }
+function startPayment() {
+    alert("PayPal payment will be connected here later.");
+}
 
 </script>
-
 </body>
 </html>
 ```
