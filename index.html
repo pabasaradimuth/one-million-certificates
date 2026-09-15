@@ -1766,7 +1766,6 @@ function showIssuedCertificate(certificate) {
 
     const { jsPDF } = window.jspdf;
 
-    // Landscape A4
     const doc = new jsPDF({
         orientation: "landscape",
         unit: "mm",
@@ -1775,7 +1774,6 @@ function showIssuedCertificate(certificate) {
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-
     const centerX = pageWidth / 2;
 
     const number =
@@ -1785,154 +1783,260 @@ function showIssuedCertificate(certificate) {
         new Date(certificate.issued_at)
             .toLocaleDateString();
 
-    // Outer border
-    doc.setDrawColor(30);
-    doc.setLineWidth(0.8);
-    doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
+    // GOLD
+    const gold = [184, 134, 11];
+
+    // =========================
+    // BACKGROUND
+    // =========================
+
+    doc.setFillColor(253, 252, 248);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    // =========================
+    // GOLD OUTER BORDER
+    // =========================
+
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(1.2);
+
+    doc.rect(
+        10,
+        10,
+        pageWidth - 20,
+        pageHeight - 20
+    );
 
     // Inner border
-    doc.setDrawColor(150);
-    doc.setLineWidth(0.3);
-    doc.rect(17, 17, pageWidth - 34, pageHeight - 34);
 
-    // Brand
+    doc.setLineWidth(0.35);
+
+    doc.rect(
+        15,
+        15,
+        pageWidth - 30,
+        pageHeight - 30
+    );
+
+    // =========================
+    // CORNER DECORATIONS
+    // =========================
+
+    doc.setLineWidth(0.7);
+
+    // Top left
+    doc.line(20, 25, 42, 25);
+    doc.line(20, 25, 20, 47);
+
+    // Top right
+    doc.line(pageWidth - 20, 25, pageWidth - 42, 25);
+    doc.line(pageWidth - 20, 25, pageWidth - 20, 47);
+
+    // Bottom left
+    doc.line(20, pageHeight - 25, 42, pageHeight - 25);
+    doc.line(20, pageHeight - 25, 20, pageHeight - 47);
+
+    // Bottom right
+    doc.line(
+        pageWidth - 20,
+        pageHeight - 25,
+        pageWidth - 42,
+        pageHeight - 25
+    );
+
+    doc.line(
+        pageWidth - 20,
+        pageHeight - 25,
+        pageWidth - 20,
+        pageHeight - 47
+    );
+
+    // =========================
+    // BRAND
+    // =========================
+
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.setTextColor(90);
+    doc.setFontSize(10);
+    doc.setTextColor(...gold);
 
     doc.text(
         "ONE MILLION CERTIFICATES",
         centerX,
-        35,
+        32,
         { align: "center" }
     );
 
-    // Main title
-    doc.setTextColor(20);
+    // =========================
+    // TITLE
+    // =========================
+
     doc.setFont("times", "bold");
-    doc.setFontSize(28);
+    doc.setFontSize(30);
+    doc.setTextColor(25, 25, 25);
 
     doc.text(
         "Certificate of Ownership",
         centerX,
-        57,
+        55,
         { align: "center" }
     );
 
-    // Belongs to
+    // Small gold divider
+
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(0.6);
+
+    doc.line(
+        centerX - 35,
+        63,
+        centerX + 35,
+        63
+    );
+
+    // =========================
+    // HOLDER LABEL
+    // =========================
+
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(110);
+    doc.setFontSize(9);
+    doc.setTextColor(110, 110, 110);
 
     doc.text(
         "THIS CERTIFICATE BELONGS TO",
         centerX,
-        76,
+        77,
         { align: "center" }
     );
 
-    // Holder name
+    // =========================
+    // HOLDER NAME — GOLD
+    // =========================
+
     doc.setFont("times", "italic");
-    doc.setFontSize(24);
-    doc.setTextColor(20);
+    doc.setFontSize(28);
+    doc.setTextColor(...gold);
 
     doc.text(
         String(certificate.name),
         centerX,
-        94,
+        96,
         {
             align: "center",
-            maxWidth: 220
+            maxWidth: 210
         }
     );
 
-    // Divider
-    doc.setDrawColor(190);
-    doc.setLineWidth(0.3);
-    doc.line(60, 105, pageWidth - 60, 105);
+    // =========================
+    // CERTIFICATE NUMBER
+    // =========================
 
-    // Certificate number label
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(110);
+    doc.setFontSize(8);
+    doc.setTextColor(110, 110, 110);
 
     doc.text(
         "CERTIFICATE NUMBER",
         centerX,
-        119,
+        113,
         { align: "center" }
     );
 
-    // Number
     doc.setFont("helvetica", "bold");
     doc.setFontSize(21);
-    doc.setTextColor(20);
+    doc.setTextColor(25, 25, 25);
 
     doc.text(
         "#" + number,
         centerX,
-        134,
+        128,
         { align: "center" }
     );
 
-    // Limited collection
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(100);
-
-    doc.text(
-    Number(certificate.number).toLocaleString() + " OF 1,000,000",
-    centerX,
-    144,
-    { align: "center" }
-);
-
-    // Verification
-    doc.setFontSize(8);
-
-    doc.text(
-        "VERIFICATION CODE",
-        centerX,
-        158,
-        { align: "center" }
-    );
+    // Dynamic collection position
 
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(...gold);
+
+    doc.text(
+        Number(certificate.number).toLocaleString()
+            + " OF 1,000,000",
+        centerX,
+        139,
+        { align: "center" }
+    );
+
+    // =========================
+    // VERIFICATION CODE
+    // =========================
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(110, 110, 110);
+
+    doc.text(
+        "OFFICIAL VERIFICATION CODE",
+        centerX,
+        153,
+        { align: "center" }
+    );
+
+    doc.setFont("courier", "bold");
     doc.setFontSize(10);
-    doc.setTextColor(20);
+    doc.setTextColor(25, 25, 25);
 
     doc.text(
         String(certificate.code),
         centerX,
-        168,
+        163,
         { align: "center" }
     );
 
-    // Issue date
+    // =========================
+    // ISSUE DATE
+    // =========================
+
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
-    doc.setTextColor(100);
+    doc.setTextColor(100, 100, 100);
 
     doc.text(
         "Issued: " + issuedDate,
         centerX,
-        181,
+        176,
         { align: "center" }
     );
 
-    // Footer
+    // =========================
+    // AUTHENTICITY FOOTER
+    // =========================
+
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(0.3);
+
+    doc.line(
+        centerX - 55,
+        183,
+        centerX + 55,
+        183
+    );
+
     doc.setFontSize(7);
+    doc.setTextColor(90, 90, 90);
 
     doc.text(
         "Authenticity can be verified at onemillioncertificates.com",
         centerX,
-        191,
+        190,
         { align: "center" }
     );
 
-    // Download
+    // =========================
+    // DOWNLOAD
+    // =========================
+
     doc.save(
-        "One-Million-Certificates-" +
+        "One-Million-Certificate-" +
         number +
         ".pdf"
     );
