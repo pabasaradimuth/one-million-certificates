@@ -1392,21 +1392,45 @@ async function verifyCertificate() {
         const date = new Date(certificate.created_at)
             .toLocaleDateString();
 
-        result.innerHTML = `
-            <strong>✓ Authentic Certificate</strong>
-            <br><br>
-            Certificate Number:
-            <strong>#${certificate.certificate_number}</strong>
-            <br>
-            Holder:
-            <strong>${certificate.buyer_name}</strong>
-            <br>
-            Issued:
-            <strong>${date}</strong>
-            <br>
-            Status:
-            <strong>Authentic</strong>
-        `;
+        result.innerHTML = "";
+
+		const title = document.createElement("strong");
+		title.textContent = "✓ Authentic Certificate";
+		
+		const numberRow = document.createElement("div");
+		numberRow.append("Certificate Number: ");
+		const numberValue = document.createElement("strong");
+		numberValue.textContent =
+		    "#" + String(certificate.certificate_number).padStart(6, "0");
+		numberRow.appendChild(numberValue);
+		
+		const holderRow = document.createElement("div");
+		holderRow.append("Holder: ");
+		const holderValue = document.createElement("strong");
+		holderValue.textContent = certificate.buyer_name;
+		holderRow.appendChild(holderValue);
+		
+		const issuedRow = document.createElement("div");
+		issuedRow.append("Issued: ");
+		const issuedValue = document.createElement("strong");
+		issuedValue.textContent = date;
+		issuedRow.appendChild(issuedValue);
+		
+		const statusRow = document.createElement("div");
+		statusRow.append("Status: ");
+		const statusValue = document.createElement("strong");
+		statusValue.textContent = "Authentic";
+		statusRow.appendChild(statusValue);
+		
+		result.appendChild(title);
+		result.appendChild(document.createElement("br"));
+		result.appendChild(document.createElement("br"));
+		result.append(
+		    numberRow,
+		    holderRow,
+		    issuedRow,
+		    statusRow
+		);
 
     } catch (error) {
 
