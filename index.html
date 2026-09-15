@@ -1051,6 +1051,34 @@
  
 </section> 
 
+<!-- PAYMENT RESULT -->
+
+<section
+    class="section"
+    id="payment-result-section"
+    style="display:none;"
+>
+    <div class="section-container">
+
+        <div class="verify-box" style="text-align:center;">
+
+            <div class="small-label">
+                PAYMENT COMPLETE
+            </div>
+
+            <h2 class="section-heading" style="font-size:42px;">
+                Your certificate is <span>ready.</span>
+            </h2>
+
+            <div id="payment-status">
+                Confirming your payment...
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
 <!-- POLICIES -->
 
 <section class="section" id="policies">
@@ -1581,6 +1609,156 @@ paymentButton.addEventListener("click", async () => {
         paymentButton.textContent = "Continue to Payment - $1";
     }
 });
+
+	async function checkReturnedPayment() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const payment = params.get("payment");
+    const token = params.get("token");
+
+    if (payment === "cancelled") {
+        alert("Payment was cancelled.");
+        return;
+    }
+
+    if (payment !== "return" || !token) {
+        return;
+    }
+
+    const section =
+        document.getElementById("payment-result-section");
+
+    const statusBox =
+        document.getElementById("payment-status");
+
+    section.style.display = "block";
+
+    section.scrollIntoView({
+        behavior: "smooth"
+    });
+
+    statusBox.textContent =
+        "Confirming your payment...";
+
+    // PayHere's server notification may arrive
+    // slightly after the customer returns.
+    for (let attempt = 0; attempt < 10; attempt++) {
+
+        try {
+
+            const response = await fetch(
+                SUPABASE_URL + "/functions/v1/get-order-status",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_KEY
+                    },
+                    body: JSON.stringify({
+                        token: token
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (
+                response.ok &&
+                data.status === "paid" &&
+                data.certificate
+            ) {
+
+                showIssuedCertificate(data.certificate);
+                return;
+            }
+
+        } catch (error) {
+            console.error(
+                "Payment status check failed:",
+                error
+            );
+        }
+
+        await new Promise(resolve =>
+            setTimeout(resolve, 2000)
+        );
+    }
+
+    statusBox.innerHTML = `
+        <strong>Payment confirmation is taking longer than expected.</strong>
+        <br><br>
+        Please refresh this page in a moment.
+    `;
+}
+
+
+function showIssuedCertificate(certificate) {
+
+    const statusBox =
+        document.getElementById("payment-status");
+
+    const number =
+        String(certificate.number).padStart(6, "0");
+
+    const issuedDate =
+        new Date(certificate.issued_at)
+            .toLocaleDateString();
+
+    statusBox.innerHTML = "";
+
+    const success = document.createElement("strong");
+    success.textContent = "✓ Payment Successful";
+
+    const details = document.createElement("div");
+    details.style.marginTop = "25px";
+    details.style.lineHeight = "2";
+
+    const nameRow = document.createElement("div");
+    nameRow.textContent =
+        "Certificate Holder: " + certificate.name;
+
+    const numberRow = document.createElement("div");
+    numberRow.textContent =
+        "Certificate Number: #" + number;
+
+    const codeRow = document.createElement("div");
+    codeRow.textContent =
+        "Verification Code: " + certificate.code;
+
+    const dateRow = document.createElement("div");
+    dateRow.textContent =
+        "Issued: " + issuedDate;
+
+    details.append(
+        nameRow,
+        numberRow,
+        codeRow,
+        dateRow
+    );
+
+    const downloadButton =
+        document.createElement("button");
+
+    downloadButton.className = "primary-button";
+    downloadButton.style.marginTop = "25px";
+    downloadButton.textContent =
+        "Download Certificate";
+
+    // PDF download comes in the next step.
+    downloadButton.addEventListener("click", () => {
+        alert("Certificate PDF download is being prepared.");
+    });
+
+    statusBox.append(
+        success,
+        details,
+        downloadButton
+    );
+}
+
+
+	checkReturnedPayment();
 
     loadSupporterCount();
     
