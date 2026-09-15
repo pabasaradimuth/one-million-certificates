@@ -1784,6 +1784,13 @@ function showIssuedCertificate(certificate) {
 
 	// Refresh the certificate counter
 	loadSupporterCount();
+
+	// Remove payment token from the browser URL
+	window.history.replaceState(
+	    {},
+	    document.title,
+	    window.location.pathname
+	);
 }
 
 	async function loadAspireFont(doc) {
