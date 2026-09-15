@@ -548,6 +548,23 @@
                 gap: 10px;
             }
         }
+
+		.location-row {
+		    display: flex;
+		    gap: 12px;
+		}
+		
+		.location-row .verify-input {
+		    flex: 1;
+		    min-width: 0;
+		}
+		
+		@media (max-width: 600px) {
+		    .location-row {
+		        flex-direction: column;
+		        gap: 0;
+		    }
+		}
     </style>
 </head>
 
@@ -976,23 +993,25 @@
     required
 >
 
-<input
-    type="text"
-    id="buyerCity"
-    class="verify-input"
-    placeholder="City"
-    maxlength="80"
-    required
->
+<div class="location-row">
+    <input
+        type="text"
+        id="buyerCity"
+        class="verify-input"
+        placeholder="City"
+        maxlength="80"
+        required
+    >
 
-<input
-    type="text"
-    id="buyerCountry"
-    class="verify-input"
-    placeholder="Country"
-    maxlength="80"
-    required
->
+    <input
+        type="text"
+        id="buyerCountry"
+        class="verify-input"
+        placeholder="Country"
+        maxlength="80"
+        required
+    >
+</div>
 
     <label style="display:flex; gap:10px; align-items:flex-start; font-size:13px; color:#666; margin:10px 0 20px; text-align:left;">
         <input type="checkbox" id="agreePolicies" required>
