@@ -1881,11 +1881,11 @@ function showIssuedCertificate(certificate) {
     doc.setTextColor(100);
 
     doc.text(
-        "1 OF 1,000,000",
-        centerX,
-        144,
-        { align: "center" }
-    );
+    Number(certificate.number).toLocaleString() + " OF 1,000,000",
+    centerX,
+    144,
+    { align: "center" }
+);
 
     // Verification
     doc.setFontSize(8);
