@@ -1032,7 +1032,6 @@
         class="primary-button"
         id="payment-button"
         style="width:100%; padding:18px;"
-        disabled
     >
         Continue to Payment - $1
     </button>
@@ -1494,6 +1493,94 @@ async function loadSupporterCount() {
 
 }).render("#paypal-button-container");
 */
+	<script>
+const paymentButton = document.getElementById("payment-button");
+
+paymentButton.addEventListener("click", async () => {
+
+    const name = document.getElementById("buyerName").value.trim();
+    const email = document.getElementById("buyerEmail").value.trim();
+    const phone = document.getElementById("buyerPhone").value.trim();
+    const address = document.getElementById("buyerAddress").value.trim();
+    const city = document.getElementById("buyerCity").value.trim();
+    const country = document.getElementById("buyerCountry").value.trim();
+    const agreed = document.getElementById("agreePolicies").checked;
+
+    if (!name || !email || !phone || !address || !city || !country) {
+        alert("Please complete all fields.");
+        return;
+    }
+
+    if (!agreed) {
+        alert("Please agree to the Terms, Privacy Policy and Refund Policy.");
+        return;
+    }
+
+    paymentButton.disabled = true;
+    paymentButton.textContent = "Preparing Payment...";
+
+    try {
+
+        const response = await fetch(
+            SUPABASE_URL + "/functions/v1/create-payhere-payment",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": "Bearer " + SUPABASE_KEY
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    phone,
+                    address,
+                    city,
+                    country
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to prepare payment");
+        }
+
+        const payment = data.payment;
+
+        const form = document.createElement("form");
+
+        form.method = "POST";
+        form.action = "https://sandbox.payhere.lk/pay/checkout";
+
+        Object.entries(payment).forEach(([key, value]) => {
+
+            const input = document.createElement("input");
+
+            input.type = "hidden";
+            input.name = key;
+            input.value = value;
+
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to start the payment. Please try again."
+        );
+
+        paymentButton.disabled = false;
+        paymentButton.textContent = "Continue to Payment - $1";
+    }
+});
 
     loadSupporterCount();
     
