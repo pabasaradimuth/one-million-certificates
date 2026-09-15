@@ -1762,7 +1762,28 @@ function showIssuedCertificate(certificate) {
 	loadSupporterCount();
 }
 
-	function downloadCertificate(certificate) {
+	async function loadAspireFont(doc) {
+    const response = await fetch("./Aspire-DemiBold.ttf");
+    const fontBuffer = await response.arrayBuffer();
+
+    const bytes = new Uint8Array(fontBuffer);
+    let binary = "";
+
+    for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+
+    const base64Font = btoa(binary);
+
+    doc.addFileToVFS("Aspire-DemiBold.ttf", base64Font);
+    doc.addFont(
+        "Aspire-DemiBold.ttf",
+        "Aspire",
+        "normal"
+    );
+}
+
+	async function downloadCertificate(certificate) {
 
     const { jsPDF } = window.jspdf;
 
@@ -1771,6 +1792,8 @@ function showIssuedCertificate(certificate) {
         unit: "mm",
         format: "a4"
     });
+
+	await loadAspireFont(doc);
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -1912,10 +1935,9 @@ function showIssuedCertificate(certificate) {
     // HOLDER NAME — GOLD
     // =========================
 
-    doc.setFont("times", "italic");
-    doc.setFontSize(28);
-    doc.setTextColor(...gold);
-
+    doc.setFont("Aspire", "normal");
+	doc.setFontSize(34);
+	doc.setTextColor(...gold);
     doc.text(
         String(certificate.name),
         centerX,
