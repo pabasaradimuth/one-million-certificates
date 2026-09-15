@@ -1757,6 +1757,9 @@ function showIssuedCertificate(certificate) {
         details,
         downloadButton
     );
+
+	// Refresh the certificate counter
+	loadSupporterCount();
 }
 
 	function downloadCertificate(certificate) {
