@@ -802,38 +802,32 @@
  
         <div class="steps"> 
  
-            <div class="step"> 
-                <div class="step-number">01</div> 
- 
-                <h3>Purchase</h3> 
- 
-                <p> 
-                    Purchase your personalized One Million Certificates 
-                    digital certificate for $2.07. 
-                </p> 
-            </div> 
- 
-            <div class="step"> 
-                <div class="step-number">02</div> 
- 
-                <h3>Receive</h3> 
- 
-                <p> 
-                    Your certificate is issued with your name, a unique 
-                    certificate number and a unique verification code. 
-                </p> 
-            </div> 
- 
-            <div class="step"> 
-                <div class="step-number">03</div> 
- 
-                <h3>Verify</h3> 
- 
-                <p> 
-                    Anyone can enter the unique verification code on this website 
-                    to confirm that the certificate exists in the official registry. 
-                </p> 
-            </div> 
+            <div class="step">
+			    <div class="step-number">01</div>
+			    <h3>Purchase</h3>
+			    <p>
+			        Purchase your personalized One Million Certificates
+			        digital certificate securely through Gumroad.
+			    </p>
+			</div>
+			
+			<div class="step">
+			    <div class="step-number">02</div>
+			    <h3>Claim</h3>
+			    <p>
+			        After purchasing, use your Gumroad license key on the
+			        Claim Certificate section to access and download your certificate.
+			    </p>
+			</div>
+			
+			<div class="step">
+			    <div class="step-number">03</div>
+			    <h3>Verify</h3>
+			    <p>
+			        Anyone can enter the unique verification code on this website
+			        to confirm the certificate in the official registry.
+			    </p>
+			</div> 
  
         </div> 
  
@@ -987,8 +981,6 @@
         </span>
     </label>
 
-    <!-- PAYPAL TEMPORARILY DISABLED <div id="paypal-button-container"></div> -->
-	
 	<div id="payment-container">
     <button
         type="button"
@@ -1057,34 +1049,6 @@
                 id="claimResult"
                 style="margin-top:20px;"
             ></div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- PAYMENT RESULT -->
-
-<section
-    class="section"
-    id="payment-result-section"
-    style="display:none;"
->
-    <div class="section-container">
-
-        <div class="verify-box" style="text-align:center;">
-
-            <div class="small-label">
-                PAYMENT COMPLETE
-            </div>
-
-            <h2 class="section-heading" style="font-size:42px;">
-                Your certificate is <span>ready.</span>
-            </h2>
-
-            <div id="payment-status">
-                Confirming your payment...
-            </div>
 
         </div>
 
@@ -1234,16 +1198,17 @@
             </p>
 
             <p>
-                Your email address is used for certificate delivery,
-                customer support and transaction-related communication.
-                It is not displayed publicly as part of certificate verification.
-            </p>
-
-            <p>
-                Public certificate verification may display limited information
-                such as the certificate number, registered display name,
-                issue date and authenticity status.
-            </p>
+			    We may receive information associated with your Gumroad purchase,
+			    including your name, email address, certificate information and
+			    payment transaction reference. This information may be used to
+			    create your certificate, maintain the certificate registry,
+			    verify purchases and provide customer support.
+			</p>
+			
+			<p>
+			    Your email address is not displayed publicly as part of
+			    certificate verification.
+			</p>
 
             <p>
                 We do not intentionally store your full card number,
@@ -1293,8 +1258,6 @@
  
  
 <!-- FOOTER --> 
- 
-<!-- FOOTER -->
 
 <footer>
 
@@ -1344,10 +1307,6 @@
     </div>
 
 </footer>
-
-<!-- PAYPAL SDK DISABLED
-<script src="https://www.paypal.com/sdk/js?client-id=BAAW1WYzXl-03wKPNEmKQ39iJ2bTHSYED6rKsDVtho9KDq82MfQzD7HID-GXKefwBBC-2ac8FJQQ8k-s8k&currency=USD"></script>
--->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	
@@ -1488,77 +1447,6 @@ async function loadSupporterCount() {
         console.error("Counter error:", error);
     }
 }
-    
-/*
-    PAYPAL CODE TEMPORARILY DISABLED 
-	
-	paypal.Buttons({
-
-    createOrder: async function () {
-
-        const response = await fetch(
-            `${SUPABASE_URL}/functions/v1/create-paypal-order`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "apikey": SUPABASE_KEY
-                },
-                body: "{}"
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error(data);
-            throw new Error("Could not create PayPal order");
-        }
-
-        return data.id;
-    },
-
-    onApprove: async function (data) {
-
-        const response = await fetch(
-            `${SUPABASE_URL}/functions/v1/capture-paypal-order`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "apikey": SUPABASE_KEY
-                },
-                body: JSON.stringify({
-                    orderID: data.orderID
-                })
-            }
-        );
-
-        const capture = await response.json();
-
-        if (!response.ok) {
-            console.error(capture);
-            alert("Payment could not be completed.");
-            return;
-        }
-
-        console.log("Payment captured:", capture);
-
-        alert("Payment successful!");
-
-    },
-
-    onCancel: function () {
-        alert("Payment cancelled.");
-    },
-
-    onError: function (err) {
-        console.error(err);
-        alert("Something went wrong with PayPal.");
-    }
-
-}).render("#paypal-button-container");
-*/
 	
 	const paymentButton = document.getElementById("payment-button");
 
@@ -2143,8 +2031,6 @@ function showIssuedCertificate(certificate) {
 	
 	    return div.innerHTML;
 	}
-
-	checkReturnedPayment();
 
     loadSupporterCount();
     
