@@ -398,6 +398,29 @@
             font-size: 14px;
         }
 
+		<section class="claim-section">
+	    <h2>Claim Your Certificate</h2>
+	
+	    <p>
+	        Enter the Gumroad license key you received after purchasing
+	        your certificate.
+	    </p>
+	
+	    <input
+	        type="text"
+	        id="licenseKey"
+	        class="verify-input"
+	        placeholder="Enter your license key"
+	        autocomplete="off"
+	    >
+	
+	    <button type="button" id="claimCertificateButton">
+	        Claim Certificate
+	    </button>
+	
+	    <div id="claimResult"></div>
+	</section>
+
         /* VERIFY */
 
         .verify-section {
@@ -2021,6 +2044,112 @@ function showIssuedCertificate(certificate) {
         ".pdf"
     );
 }
+
+	const claimButton =
+    document.getElementById("claimCertificateButton");
+
+	const claimResult =
+	    document.getElementById("claimResult");
+	
+	claimButton.addEventListener("click", async () => {
+	
+	    const licenseKey =
+	        document.getElementById("licenseKey").value.trim();
+	
+	    if (!licenseKey) {
+	        alert("Please enter your Gumroad license key.");
+	        return;
+	    }
+	
+	    claimButton.disabled = true;
+	    claimButton.textContent = "Checking...";
+	
+	    claimResult.innerHTML = "";
+	
+	    try {
+	
+	        const response = await fetch(
+	            SUPABASE_URL + "/functions/v1/claim-certificate",
+	            {
+	                method: "POST",
+	
+	                headers: {
+	                    "Content-Type": "application/json",
+	                    "apikey": SUPABASE_KEY
+	                },
+	
+	                body: JSON.stringify({
+	                    license_key: licenseKey
+	                })
+	            }
+	        );
+	
+	        const data = await response.json();
+	
+	        if (!response.ok) {
+	            throw new Error(
+	                data.error || "Unable to claim certificate."
+	            );
+	        }
+	
+	        const certificate = data.certificate;
+	
+	        const number =
+	            String(certificate.number).padStart(6, "0");
+	
+	        claimResult.innerHTML = `
+	            <div class="certificate-claim-success">
+	                <h3>Certificate Found</h3>
+	
+	                <p>
+	                    <strong>Name:</strong>
+	                    ${escapeHtml(certificate.name)}
+	                </p>
+	
+	                <p>
+	                    <strong>Certificate:</strong>
+	                    #${number}
+	                </p>
+	
+	                <p>
+	                    <strong>Verification Code:</strong>
+	                    ${escapeHtml(certificate.code)}
+	                </p>
+	
+	                <button type="button" id="downloadClaimedCertificate">
+	                    Download Certificate
+	                </button>
+	            </div>
+	        `;
+	
+	        document
+	            .getElementById("downloadClaimedCertificate")
+	            .addEventListener("click", () => {
+	                downloadCertificate(certificate);
+	            });
+	
+	    } catch (error) {
+	
+	        console.error(error);
+	
+	        claimResult.textContent = error.message;
+	
+	    } finally {
+	
+	        claimButton.disabled = false;
+	        claimButton.textContent = "Claim Certificate";
+	    }
+	});
+	
+	
+	function escapeHtml(value) {
+	
+	    const div = document.createElement("div");
+	
+	    div.textContent = String(value);
+	
+	    return div.innerHTML;
+	}
 
 	checkReturnedPayment();
 
