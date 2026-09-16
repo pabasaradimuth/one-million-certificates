@@ -398,29 +398,6 @@
             font-size: 14px;
         }
 
-		<section class="claim-section">
-	    <h2>Claim Your Certificate</h2>
-	
-	    <p>
-	        Enter the Gumroad license key you received after purchasing
-	        your certificate.
-	    </p>
-	
-	    <input
-	        type="text"
-	        id="licenseKey"
-	        class="verify-input"
-	        placeholder="Enter your license key"
-	        autocomplete="off"
-	    >
-	
-	    <button type="button" id="claimCertificateButton">
-	        Claim Certificate
-	    </button>
-	
-	    <div id="claimResult"></div>
-	</section>
-
         /* VERIFY */
 
         .verify-section {
@@ -1073,7 +1050,56 @@
  
     </div> 
  
-</section> 
+</section>
+
+<!-- CLAIM CERTIFICATE -->
+
+<section class="section" id="claim">
+    <div class="section-container">
+
+        <div class="verify-box">
+
+            <div style="text-align:center;">
+                <div class="small-label">
+                    GUMROAD PURCHASE
+                </div>
+
+                <h2 class="section-heading" style="font-size:42px;">
+                    Claim Your <span>Certificate.</span>
+                </h2>
+
+                <p style="color:#666; margin-bottom:25px;">
+                    Enter the Gumroad license key you received after purchasing
+                    your certificate.
+                </p>
+            </div>
+
+            <input
+                type="text"
+                id="licenseKey"
+                class="verify-input"
+                placeholder="Enter your Gumroad license key"
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                id="claimCertificateButton"
+                class="primary-button"
+                style="width:100%;"
+            >
+                Claim Certificate
+            </button>
+
+            <div
+                id="claimResult"
+                style="margin-top:20px;"
+            ></div>
+
+        </div>
+
+    </div>
+</section>
 
 <!-- PAYMENT RESULT -->
 
